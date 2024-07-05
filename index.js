@@ -160,5 +160,8 @@ async function initRabbitMQ() {
 
 initRabbitMQ();
 
+app.get("/",(req,res) => {
+  return res.status(200).send("Service OK");
+})
 //Let the server to listen
 server.listen(port, () => console.log(`Listening on port ${port}`));

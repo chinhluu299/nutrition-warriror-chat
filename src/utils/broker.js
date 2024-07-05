@@ -29,6 +29,7 @@ const PublishMessage = async (channel, routing_key, message) => {
   }
 };
 
+
 const SubscribeMessage = async (channel) => {
   try {
     //await channel.assertExchange(EXCHANGE_NAME);
@@ -81,7 +82,7 @@ async function handleUserUpdate(message) {
           {
             _id: message.id,
           },
-          { $set: { name: message.name, photo: message.photo } }
+          { $set: { name: message.name, photo: message.image } }
         );
         update.exec();
       }

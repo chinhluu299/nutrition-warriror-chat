@@ -62,16 +62,20 @@ const StoryController = {
       let userId = req.body.userId;
       const limit = parseInt(req.body.limit, 10) || 10;
       const offset = parseInt(req.body.offset, 10) || 0;
+      let time = new Date(req.body.time) || new Date();
+      if(isNaN(time)) time = new Date();
       
       const user = await User.findById(userId);
       if (user) {
         const friends = user.follows;
         const stories = await Story.find({ author: { $in: friends } })
-          .select("author media content time")
+          .where("time")
+          .lte(time)
           .sort({ time: -1 })
-          .skip({ offset })
+          .select("author media content time")
+          .skip(offset)
           .limit(limit)
-          .populate("author")
+          .populate("author");
         return res.status(200).json({ success: true, data: stories });
       }
       return res

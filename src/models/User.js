@@ -8,11 +8,10 @@ const UserSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  follows: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "User",
-    default: [],
-  },
+  follows: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+  }],
 });
 
 module.exports = mongoose.model("Users", UserSchema);

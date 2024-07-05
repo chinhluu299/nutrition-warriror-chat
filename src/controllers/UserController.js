@@ -1,6 +1,33 @@
 const User = require("../models/User");
 
 const UserController = {
+  getUser: async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await User.findById(userId).populate("follows");
+      if (!user)
+        return res
+          .status(404)
+          .json({ success: false, message: "User not found" });
+      return res.status(200).json({ success: true, data: user });
+    } catch (err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
+  },
+  getFollow: async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await User.findById(userId).populate("follows");
+      if (!user)
+        return res
+          .status(404)
+          .json({ success: false, message: "User not found" });
+      const followers = user.follows;
+      return res.status(200).json({ success: true, data: followers });
+    } catch (err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
+  },
   addFollow: async (req, res) => {
     //body: userId, targetId
     try {
@@ -99,9 +126,7 @@ const UserController = {
       if (user && frenUser) {
         const friends = user.follows;
         if (friends.includes(newFriend)) {
-          user.follows = friends.filter(
-            (value) => value != newFriend
-          );
+          user.follows = friends.filter((value) => value != newFriend);
           await user.save();
         }
         const friends_2 = frenUser.follows;
@@ -121,6 +146,7 @@ const UserController = {
       return res.status(500).json({ success: false, message: error });
     }
   },
+
 };
 
 module.exports = UserController;
