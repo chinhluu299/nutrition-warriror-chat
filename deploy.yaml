@@ -10,6 +10,8 @@ spec:
       labels:
         app: social-service
     spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
       containers:
       - name: social-service
         image: chinhluu2907/social-service:latest

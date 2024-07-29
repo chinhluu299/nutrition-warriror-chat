@@ -67,7 +67,7 @@ const StoryController = {
       
       const user = await User.findById(userId);
       if (user) {
-        const friends = user.follows;
+        const friends = [userId,...user.follows];
         const stories = await Story.find({ author: { $in: friends } })
           .where("time")
           .lte(time)
